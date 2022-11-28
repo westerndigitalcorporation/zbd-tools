@@ -1,0 +1,37 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Author: Tommy McGee (tommy.mcgee@opensource.wdc.com)
+#
+# Copyright (c) 2022 Western Digital Corporation or its affiliates.
+#
+# This toml file is used to specify, Build process
+# Metadata Generation, Wheel Generation and  Back-end Configuration
+# for the pip package creation process
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zbd_tools"
+version = "0.0.19"
+description = "A set of tools used to determine Zoned Storage Support"
+authors = [
+  {name = "Tommy McGee", email="tommy.mcgee@opensource.wdc.com" }
+]
+
+readme = "README.md"
+requires-python = ">=3.0"
+keywords = ["zoned", "storage", "zoned storage"]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+homepage = "https://zonedstorage.io/"
+
+[project.scripts]
+zbd-check = "check:cli_arguments"

@@ -1,0 +1,6 @@
+#!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# SPDX-FileCopyrightText: 2022 Western Digital Corporation or its affiliates.
+
+python3 /usr/share/zbd-tools/zbd-check.py $*
