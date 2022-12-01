@@ -85,7 +85,7 @@ Uninstalling zbd-check
 
 A PIP package for *zbd-tools* is provided by the Python Package Index (pypi).
 For users who prefer not to install from the source tree using *make*, the
-following command can be executed (eventually as root) to fetch and install the
+following command can be executed to fetch and install the
 *zbd-tools* package from pypi.
 
 ```

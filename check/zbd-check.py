@@ -17,33 +17,35 @@ sys.path.append('/usr/share/zbd-tools')
 import helpers
 
 
-
 def evaluate_using_modinfo():
+    """ Review the current modinfo data.
+
+    Check for null_blk and scsi_debug Zoned support
     """
-    Review the current modinfo data for null_blk and
-    scsi_debug Zoned support
-    """
-    cmd_scsi_debug = os.popen('sudo modinfo scsi_debug | grep zbc')
-    cmd_null_blk = os.popen('sudo modinfo null_blk | grep zoned:')
+    cmd_scsi_debug = os.popen('/sbin/modinfo scsi_debug | grep zbc')
+    cmd_null_blk = os.popen('/sbin/modinfo null_blk | grep zoned:')
     scsi_debug_result = str(cmd_scsi_debug.read())
     null_blk_reslut = str(cmd_null_blk.read())
     check_scsi_debug_result = len(scsi_debug_result)
     check_null_blk_reslut = len(null_blk_reslut)
     if check_scsi_debug_result == 0:
         print(
-            "\n *modinfo indicates current loaded kernel does not support zoned scsi_debug")
+            "\n *modinfo indicates current loaded kernel does not"
+            " support zoned scsi_debug")
     else:
         pass
     if check_null_blk_reslut == 0:
         print(
-            "\n *modinfo indicates current loaded kernel does not support zoned null_blk")
+            "\n *modinfo indicates current loaded kernel does not support"
+            " zoned null_blk")
     else:
         pass
 
 
 def evaluate_kernel_config_features():
-    """ Gather the kernel features available then evaluate the statues
-        and display the result to the user
+    """ Gather the kernel features available.
+
+    Then evaluate the statues and display the result to the user
     """
     # get the results from  the function that reads the config file
     search_kernel_config = dict(helpers.get_kernel_config_info())
@@ -117,15 +119,18 @@ def evaluate_kernel_config_features():
 
 
 def evaluate_kernel_api():
-    """ blkzoned.h"""
+    """blkzoned.h"""
     if os.path.exists('/usr/include/linux/blkzoned.h'):
         print("- Zone management kernel API header file: installed")
     else:
         print("- Zone management kernel API header: not installed")
         print("  WARNING: the kernel zone management API header file")
-        print("           /usr/include/linux/blkzoned.h was not found. User libraries")
-        print("           and applications using the kernel zone management API will")
-        print("           not compile correctly or will be compiled without zoned")
+        print("           /usr/include/linux/blkzoned.h was not found."
+              " User libraries")
+        print("           and applications using the kernel zone management"
+              " API will")
+        print("           not compile correctly or will be compiled without"
+              " zoned")
         print("           block device support.")
 
 
@@ -138,6 +143,7 @@ def evaluate_fio():
     ver = os.popen('fio --version | head -n 1')
     ver_text = str(ver.read())
     print("- fio: installed, version " + ver_text.rstrip())
+
 
 def evaluate_nvme():
     """Determine if nvme-cli is installed"""
@@ -185,7 +191,8 @@ def evaluate_library_dynamic(lib):
     libso = lib + ".so"
     lib64path = r'/usr/lib64/' + libso + '.*'
     libpath = r'/usr/lib/' + libso + '.*'
-    if os.path.exists("/usr/lib64/" + libso) or os.path.exists("/usr/lib/" + libso):
+    if os.path.exists("/usr/lib64/" + libso) or os.path.exists(
+                      "/usr/lib/" + libso):
         ver = os.popen("pkg-config --modversion " + lib)
         ver_text = str(ver.read())
         print("    - Dynamic library installed, version " + ver_text.rstrip())
@@ -198,7 +205,8 @@ def evaluate_library_dynamic(lib):
 def evaluate_library_static(lib):
     """Determine if a static library is installed"""
     liba = lib + ".a"
-    if os.path.exists("/usr/lib64/" + liba) or os.path.exists("/usr/lib/" + liba):
+    if os.path.exists("/usr/lib64/" + liba) or os.path.exists(
+                      "/usr/lib/" + liba):
         print("    - Static library installed")
     else:
         print("    - Static library not installed")
@@ -214,7 +222,6 @@ def evaluate_library_header(header):
 
 def evaluate_libraries():
     """ Determine if libraries are installed """
-
     print("- libzbc:")
     evaluate_library_dynamic("libzbc")
     evaluate_library_static("libzbc")
@@ -265,15 +272,15 @@ def main():
 
 def version_information():
     """ Show the Version of the script"""
-    print("1.0.0")
+    print("1.0.1")
 
 
 # CLI Arguments
 cli_parser = argparse.ArgumentParser()
 cli_parser.add_argument("--version", help="show the version of zbd-check",
-                    action="store_true")
+                        action="store_true")
 args = cli_parser.parse_args()
 if args.version:
     version_information()
-if len(sys.argv)==1:
+if len(sys.argv) == 1:
     main()
